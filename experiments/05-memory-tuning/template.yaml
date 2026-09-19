@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: python3.13
+    Handler: app.lambda_handler
+    CodeUri: src/
+    Architectures:
+      - arm64
+    Timeout: 30
+
+Resources:
+  Slide08Mem128:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide08-mem-128
+      MemorySize: 128
+
+  Slide08Mem512:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide08-mem-512
+      MemorySize: 512
+
+  Slide08Mem1024:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide08-mem-1024
+      MemorySize: 1024
+
+  Slide08Mem1769:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide08-mem-1769
+      MemorySize: 1769

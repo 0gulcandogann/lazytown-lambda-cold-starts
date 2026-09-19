@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  Slide07Eager:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide07-eager
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: eager/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 15
+
+  Slide07Lazy:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide07-lazy
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: lazy/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 15

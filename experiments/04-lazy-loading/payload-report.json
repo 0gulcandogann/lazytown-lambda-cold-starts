@@ -1,0 +1,14 @@
+{
+  "type": "report",
+  "rows": [
+    {
+      "value": 10
+    },
+    {
+      "value": 20
+    },
+    {
+      "value": 30
+    }
+  ]
+}

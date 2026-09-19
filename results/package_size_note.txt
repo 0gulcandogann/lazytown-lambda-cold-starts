@@ -1,0 +1,18 @@
+Package diet size measurement
+=============================
+
+Original test terminal observation:
+- FAT SAM build directory: ~125 MB
+- SLIM SAM build directory: minimal (terminal du display was not useful for the tiny directory)
+
+This was measured with:
+  du -sh .aws-sam/build/Slide09Fat
+  du -sh .aws-sam/build/Slide09Slim
+
+Important: this is SAM BUILD-DIRECTORY size, NOT deployment ZIP size.
+
+In the unpacked source archive used to prepare this pack:
+- FAT logical bytes: 123,726,070
+- SLIM handler file: 207 bytes + empty requirements.txt
+
+Filesystem allocation and du display can vary by environment.

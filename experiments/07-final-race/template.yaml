@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  BestMemory:
+    Type: Number
+    Default: 1024
+    Description: Replace this with the best memory setting discovered in Slide 8.
+
+Resources:
+  FinalPythonBaseline:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-final-python-baseline
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: python-baseline/
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Timeout: 20
+
+  FinalPythonARM64:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-final-python-arm64
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: python-baseline/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 20
+
+  FinalPythonOptimized:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-final-python-optimized
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: python-optimized/
+      Architectures:
+        - arm64
+      MemorySize: !Ref BestMemory
+      Timeout: 20
+
+  FinalGo:
+    Type: AWS::Serverless::Function
+    Metadata:
+      SkipBuild: True
+    Properties:
+      FunctionName: lazytown-final-go
+      Runtime: provided.al2023
+      Handler: bootstrap
+      CodeUri: go-build/
+      Architectures:
+        - arm64
+      MemorySize: !Ref BestMemory
+      Timeout: 20

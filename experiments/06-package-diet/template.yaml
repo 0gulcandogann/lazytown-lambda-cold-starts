@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  Slide09Fat:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide09-fat
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: fat/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 15
+
+  Slide09Slim:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide09-slim
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: slim/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 15

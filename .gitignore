@@ -1,0 +1,30 @@
+# AWS SAM build output
+.aws-sam/
+**/.aws-sam/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+
+# Go build artifacts
+experiments/02-python-vs-go/go/bootstrap
+experiments/07-final-race/go-build/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Local archives
+*.zip
+
+# Documentation kept locally, not published with the repository
+docs/

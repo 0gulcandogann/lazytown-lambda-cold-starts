@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  Slide03PythonBaseline:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide03-python-baseline
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: src/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 10

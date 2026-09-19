@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  Slide05Python:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lazytown-slide05-python
+      Runtime: python3.13
+      Handler: app.lambda_handler
+      CodeUri: python/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 10
+
+  Slide05Go:
+    Type: AWS::Serverless::Function
+    Metadata:
+      BuildMethod: go1.x
+    Properties:
+      FunctionName: lazytown-slide05-go
+      Runtime: provided.al2023
+      Handler: bootstrap
+      CodeUri: go/
+      Architectures:
+        - arm64
+      MemorySize: 512
+      Timeout: 10
