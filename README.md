@@ -4,10 +4,6 @@
 
 The project uses a simple LazyTown-inspired idea: **Sportacus is already moving; Robbie needs a better wake-up routine.** The point is not that one language universally “wins.” The point is to **measure the workload, isolate the bottleneck, change one thing, and measure again.**
 
-<p align="center">
-  <img src="docs/cold-start-flow.png" alt="Request to Init to Handler to Response cold-start flow" width="100%" />
-</p>
-
 ## Headline result
 
 For the final Python workload in this benchmark:
@@ -39,17 +35,11 @@ All values above are **Cold Total P50**, where this project defines:
 Cold Total = Init Duration + Duration
 ```
 
-See [`docs/results.md`](docs/results.md) for the full result set and [`docs/methodology.md`](docs/methodology.md) for caveats.
-
 ## Repository layout
 
 ```text
 .
 ├── README.md
-├── docs/
-│   ├── methodology.md
-│   ├── results.md
-│   └── cold-start-flow.png
 ├── experiments/
 │   ├── 01-python-baseline/
 │   ├── 02-python-vs-go/
@@ -225,8 +215,6 @@ The repository includes all **1,140 raw rows** used for the checked-in aggregate
 - The package-size measurement refers to the SAM build directory, not deployment ZIP size.
 - `client_ms` includes local CLI/network overhead and is not Lambda execution duration.
 - The existing billed-duration aggregate is not sufficient for a rigorous cost comparison between cold and warm executions.
-
-More detail: [`docs/methodology.md`](docs/methodology.md).
 
 ## Useful commands
 
