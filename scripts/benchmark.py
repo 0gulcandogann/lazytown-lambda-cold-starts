@@ -64,6 +64,37 @@ def force_refresh(function_name: str) -> None:
         "--function-name", function_name,
     ])
 
+def synchronized_burst(fn, n: int) -> list:
+    """Run fn(i) for i in range(n) on n threads released by one barrier."""
+    import threading
+    barrier = threading.Barrier(n)
+    out: list = [None] * n
+
+    def worker(i: int) -> None:
+        barrier.wait()
+        out[i] = fn(i)
+
+    threads = [threading.Thread(target=worker, args=(i,)) for i in range(n)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    return out
+
+def boto3_invoke(function_name: str, payload: bytes, qualifier: str):
+    """Pre-built client per call so the barrier releases straight into the HTTP request."""
+    import boto3
+    from botocore.config import Config
+    client = boto3.client("lambda", config=Config(max_pool_connections=64, read_timeout=90))
+
+    def call(_: int):
+        t0 = time.perf_counter()
+        r = client.invoke(FunctionName=function_name, Payload=payload, LogType="Tail", Qualifier=qualifier)
+        ms = (time.perf_counter() - t0) * 1000.0
+        body = json.loads(r["Payload"].read() or b"{}")
+        return body, ms, base64.b64decode(r["LogResult"]).decode("utf-8", errors="replace")
+    return call
+
 def publish_version(function_name: str) -> str:
     version = run([
         "aws", "lambda", "publish-version",
@@ -195,13 +226,11 @@ def main() -> int:
 
     qualifier = None
     if args.snapstart:
-        from concurrent.futures import ThreadPoolExecutor
+        force_refresh(args.function_name)  # new config => publish makes a fresh version/snapshot
         qualifier = publish_version(args.function_name)
-        print(f"[+] Published version {qualifier}; burst of {args.cold}")
-        with ThreadPoolExecutor(max_workers=args.cold) as pool:
-            results = list(pool.map(
-                lambda _: invoke(args.function_name, args.payload, qualifier),
-                range(args.cold)))
+        print(f"[+] Published version {qualifier}; synchronized burst of {args.cold}")
+        call = boto3_invoke(args.function_name, args.payload.read_bytes(), qualifier)
+        results = synchronized_burst(call, args.cold)
         n = 0
         for response, client_ms, logs in results:
             report = parse_report(logs)

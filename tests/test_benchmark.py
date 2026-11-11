@@ -31,3 +31,14 @@ def test_invoke_cmd_cli_v1_omits_binary_format():
 def test_invoke_cmd_cli_v2_keeps_binary_format():
     cmd = invoke_cmd("fn", Path("p.json"), Path("o.json"), cli_major=2)
     assert cmd[cmd.index("--cli-binary-format") + 1] == "raw-in-base64-out"
+
+def test_burst_releases_all_workers_together():
+    import threading, time
+    from benchmark import synchronized_burst
+    starts = []
+    def call(i):
+        starts.append(time.perf_counter())
+        return i
+    out = synchronized_burst(call, 20)
+    assert sorted(out) == list(range(20))
+    assert max(starts) - min(starts) < 0.05
