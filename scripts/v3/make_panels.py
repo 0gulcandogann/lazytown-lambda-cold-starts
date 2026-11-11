@@ -127,13 +127,13 @@ def main() -> int:
     bar_panel("ARM64 — pandas app, 512 MB",
               [("X86_64", c("eager-x86-512-simple")), ("ARM64", c("eager-512-simple"))],
               [f"↓ {pct(c('eager-x86-512-simple'), c('eager-512-simple'))}"],
-              OUT / "s10_arm.png", colors=[CYAN, GOLD])
+              OUT / "s10_arm.png", colors=[CYAN, GOLD], font_scale=1.7)
 
     # Slide 11 — training card
-    code_panel(["ROBBIE'S TRAINING", "",
-                "✓ ARM64 + 1024 MB", "✓ .pyc precompiled", "✓ lazy import", "",
+    code_panel(["ROBBIE'S TRAINING",
+                "✓ ARM64 + 1024 MB", "✓ .pyc precompiled", "✓ lazy import",
                 f"simple {c('final-baseline-simple'):.0f} -> {c('final-opt-simple'):.0f} ms",
-                f"↓ {pct(c('final-baseline-simple'), c('final-opt-simple'))}", "",
+                f"↓ {pct(c('final-baseline-simple'), c('final-opt-simple'))}",
                 f"report best: SnapStart {c('final-snap-report'):.0f} ms",
                 f"↓ {pct(c('final-baseline-report'), c('final-snap-report'))}"],
                OUT / "s11_card.png", width=760, size=30)

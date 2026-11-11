@@ -27,8 +27,8 @@ def _frame(d: ImageDraw.ImageDraw, w: int, h: int, s: int) -> None:
 
 def bar_panel(title: str, rows: list[tuple[str, float]], footer: list[str], out: Path,
               width: int = 1220, unit: str = "ms", colors: list | None = None,
-              footer_colors: list | None = None) -> Path:
-    s = width / 610
+              footer_colors: list | None = None, font_scale: float = 1.0) -> Path:
+    s = width / 610 * font_scale
     fs, pad, rh = int(15 * s), int(14 * s), int(24 * s)
     th = int(46 * s)
     h = th + pad + rh * len(rows) + pad + (int(26 * s) * len(footer)) + pad
@@ -37,7 +37,7 @@ def bar_panel(title: str, rows: list[tuple[str, float]], footer: list[str], out:
     _frame(d, width, h, int(4 * s))
     d.text((pad + int(6 * s), th // 2), title, font=_font(fs, True), fill=TEXT, anchor="lm")
     d.line([int(4 * s), th, width - int(4 * s), th], fill=BORDER, width=max(2, int(s)))
-    label_w, val_w = int(180 * s), int(130 * s)
+    label_w, val_w = int(180 * s / font_scale ** 0.5), int(130 * s)
     bar_x0, bar_x1 = pad + label_w, width - pad - val_w
     vmax = max(v for _, v in rows) or 1
     colors = colors or PALETTE
