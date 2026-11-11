@@ -23,3 +23,11 @@ def test_invoke_cmd_adds_qualifier():
 
 def test_invoke_cmd_without_qualifier():
     assert "--qualifier" not in invoke_cmd("fn", Path("p.json"), Path("out.json"))
+
+def test_invoke_cmd_cli_v1_omits_binary_format():
+    cmd = invoke_cmd("fn", Path("p.json"), Path("o.json"), cli_major=1)
+    assert "--cli-binary-format" not in cmd
+
+def test_invoke_cmd_cli_v2_keeps_binary_format():
+    cmd = invoke_cmd("fn", Path("p.json"), Path("o.json"), cli_major=2)
+    assert cmd[cmd.index("--cli-binary-format") + 1] == "raw-in-base64-out"

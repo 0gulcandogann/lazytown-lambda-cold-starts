@@ -26,6 +26,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import functools
 import time
 import uuid
 
@@ -75,13 +76,23 @@ def publish_version(function_name: str) -> str:
     ])
     return version
 
+@functools.cache
+def aws_cli_major() -> int:
+    out = subprocess.run(["aws", "--version"], text=True, capture_output=True)
+    m = re.search(r"aws-cli/(\d+)", out.stdout + out.stderr)
+    return int(m.group(1)) if m else 2
+
 def invoke_cmd(function_name: str, payload_path: Path, response_path: Path,
-               qualifier: str | None = None) -> list[str]:
+               qualifier: str | None = None, cli_major: int | None = None) -> list[str]:
+    if cli_major is None:
+        cli_major = aws_cli_major()
+    # CLI v1 sends fileb:// payloads raw already and rejects --cli-binary-format.
+    binary_fmt = ["--cli-binary-format", "raw-in-base64-out"] if cli_major >= 2 else []
     cmd = [
         "aws", "lambda", "invoke",
         "--function-name", function_name,
         "--payload", f"fileb://{payload_path}",
-        "--cli-binary-format", "raw-in-base64-out",
+        *binary_fmt,
         "--log-type", "Tail",
         "--query", "LogResult",
         "--output", "text",
