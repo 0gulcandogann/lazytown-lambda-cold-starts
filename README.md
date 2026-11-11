@@ -4,9 +4,37 @@
 
 The project uses a simple LazyTown-inspired idea: **Sportacus is already moving; Robbie needs a better wake-up routine.** The point is not that one language universally “wins.” The point is to **measure the workload, isolate the bottleneck, change one thing, and measure again.**
 
-## Headline result
+## Headline result (v3, November 2026)
 
-For the final Python workload in this benchmark:
+Same app for every variant (a `simple` request and a pandas `report` request), python3.14, eu-central-1,
+30 cold + 30 warm per cell. Full table: [`results-v3/summary.md`](results-v3/summary.md).
+
+```text
+Cold Total P50                     simple       report
+Python baseline (x86, 512 MB)    2506.73 ms   2507.44 ms
++ ARM64 + 1024 MB                2033.68 ms   2038.55 ms
++ .pyc precompiled                736.52 ms    725.17 ms   <- no-regret: both paths -71%
++ .pyc + lazy import               79.84 ms   1340.81 ms   <- simple -96.8%, report pays later
++ .pyc + SnapStart                389.80 ms    559.00 ms   <- best report path (paid feature)
+Python 3.15 `lazy import`          79.97 ms   1328.80 ms   (PEP 810, preview runtime)
+Go (reference)                     49.40 ms     50.10 ms
+```
+
+What v3 found that v2 did not:
+
+- **`.pyc` matters most.** `/var/task` is read-only, so Python cannot write `__pycache__` and recompiles every
+  cold start: pandas init 2039.99 → 719.49 ms (−64.7%). A `.pyc` built for the wrong Python version is ignored
+  (2045.19 ms).
+- **Why lazy imports can be slower:** init runs with boosted CPU regardless of memory (eager pandas init: 716.61 ms
+  at 128 MB vs 712.48 ms at 1769 MB); the handler gets CPU proportional to memory. The same lazy import costs
+  2689.39 ms at 512 MB and 792.49 ms at 1769 MB.
+- **Reproducibility:** all 19 original v2 runs were re-measured unchanged and landed within −4.5%…+2.0%
+  ([`results-v3/reproducibility.md`](results-v3/reproducibility.md)).
+
+How to run it: [`experiments-v3/README.md`](experiments-v3/README.md). The original v2 experiments below are kept
+as they were.
+
+## v2 headline (original run)
 
 ```text
 Python baseline     2457.86 ms Cold Total P50
