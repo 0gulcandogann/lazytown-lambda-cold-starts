@@ -1,0 +1,391 @@
+[
+ {
+  "name": "tiny-py",
+  "app": "tiny",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": false,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "tiny"
+  ],
+  "test_ids": [
+   "T1"
+  ]
+ },
+ {
+  "name": "tiny-go",
+  "app": "go",
+  "runtime": "provided.al2023",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": false,
+  "pyc": "none",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "tiny"
+  ],
+  "test_ids": [
+   "T1"
+  ]
+ },
+ {
+  "name": "eager-importtime",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {
+   "PYTHONPROFILEIMPORTTIME": "1"
+  },
+  "payloads": [
+   "simple"
+  ],
+  "test_ids": [
+   "T2"
+  ]
+ },
+ {
+  "name": "eager-512",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T3",
+   "T5",
+   "T7"
+  ]
+ },
+ {
+  "name": "lazyfn-512",
+  "app": "lazy_fn",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T3"
+  ]
+ },
+ {
+  "name": "eager-128",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 128,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple"
+  ],
+  "test_ids": [
+   "T4"
+  ]
+ },
+ {
+  "name": "eager-1769",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1769,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple"
+  ],
+  "test_ids": [
+   "T4"
+  ]
+ },
+ {
+  "name": "lazyfn-1769",
+  "app": "lazy_fn",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1769,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "report"
+  ],
+  "test_ids": [
+   "T4"
+  ]
+ },
+ {
+  "name": "eager-pyc-none",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "none",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple"
+  ],
+  "test_ids": [
+   "T5"
+  ]
+ },
+ {
+  "name": "eager-pyc-wrong",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "wrong",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple"
+  ],
+  "test_ids": [
+   "T5"
+  ]
+ },
+ {
+  "name": "eager-315",
+  "app": "eager",
+  "runtime": "python3.15",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T6"
+  ]
+ },
+ {
+  "name": "pep810-315",
+  "app": "lazy_pep810",
+  "runtime": "python3.15",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T6",
+   "T9"
+  ]
+ },
+ {
+  "name": "eager-x86-512",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "x86_64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple"
+  ],
+  "test_ids": [
+   "T7"
+  ]
+ },
+ {
+  "name": "sha-128",
+  "app": "sha",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 128,
+  "deps": false,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "sha"
+  ],
+  "test_ids": [
+   "T8"
+  ]
+ },
+ {
+  "name": "sha-512",
+  "app": "sha",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": false,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "sha"
+  ],
+  "test_ids": [
+   "T8"
+  ]
+ },
+ {
+  "name": "sha-1024",
+  "app": "sha",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": false,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "sha"
+  ],
+  "test_ids": [
+   "T8"
+  ]
+ },
+ {
+  "name": "sha-1769",
+  "app": "sha",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1769,
+  "deps": false,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "sha"
+  ],
+  "test_ids": [
+   "T8"
+  ]
+ },
+ {
+  "name": "final-baseline",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "x86_64",
+  "memory": 512,
+  "deps": true,
+  "pyc": "none",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T9"
+  ]
+ },
+ {
+  "name": "final-free",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": true,
+  "pyc": "none",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T9"
+  ]
+ },
+ {
+  "name": "final-opt",
+  "app": "lazy_fn",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T9"
+  ]
+ },
+ {
+  "name": "final-snap",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": true,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T9",
+   "T10"
+  ]
+ },
+ {
+  "name": "final-go",
+  "app": "go",
+  "runtime": "provided.al2023",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": false,
+  "pyc": "none",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T9"
+  ]
+ }
+]

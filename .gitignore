@@ -29,3 +29,4 @@ experiments/07-final-race/go-build/
 # Documentation kept locally, not published with the repository
 docs/
 .superpowers/
+build/
