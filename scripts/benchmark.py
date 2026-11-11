@@ -35,7 +35,8 @@ REPORT_RE = re.compile(
     r"Billed Duration:\s+(?P<billed>[0-9.]+)\s+ms\s+"
     r"Memory Size:\s+(?P<memory>[0-9.]+)\s+MB\s+"
     r"Max Memory Used:\s+(?P<max_memory>[0-9.]+)\s+MB"
-    r"(?:\s+Init Duration:\s+(?P<init>[0-9.]+)\s+ms)?",
+    r"(?:\s+Init Duration:\s+(?P<init>[0-9.]+)\s+ms)?"
+    r"(?:\s+Restore Duration:\s+(?P<restore>[0-9.]+)\s+ms)?",
     re.DOTALL,
 )
 
@@ -62,10 +63,20 @@ def force_refresh(function_name: str) -> None:
         "--function-name", function_name,
     ])
 
-def invoke(function_name: str, payload_path: Path) -> tuple[dict, float, str]:
-    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tf:
-        response_path = Path(tf.name)
+def publish_version(function_name: str) -> str:
+    version = run([
+        "aws", "lambda", "publish-version",
+        "--function-name", function_name,
+        "--query", "Version", "--output", "text",
+    ])
+    run([
+        "aws", "lambda", "wait", "published-version-active",
+        "--function-name", function_name, "--qualifier", version,
+    ])
+    return version
 
+def invoke_cmd(function_name: str, payload_path: Path, response_path: Path,
+               qualifier: str | None = None) -> list[str]:
     cmd = [
         "aws", "lambda", "invoke",
         "--function-name", function_name,
@@ -74,8 +85,17 @@ def invoke(function_name: str, payload_path: Path) -> tuple[dict, float, str]:
         "--log-type", "Tail",
         "--query", "LogResult",
         "--output", "text",
-        str(response_path),
     ]
+    if qualifier:
+        cmd += ["--qualifier", qualifier]
+    return cmd + [str(response_path)]
+
+def invoke(function_name: str, payload_path: Path,
+           qualifier: str | None = None) -> tuple[dict, float, str]:
+    with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tf:
+        response_path = Path(tf.name)
+
+    cmd = invoke_cmd(function_name, payload_path, response_path, qualifier)
 
     started = time.perf_counter()
     log_b64 = run(cmd)
@@ -99,6 +119,8 @@ def parse_report(log_text: str) -> dict:
     memory = float(m.group("memory"))
     max_memory = float(m.group("max_memory"))
     init = float(m.group("init")) if m.group("init") else None
+    restore = float(m.group("restore")) if m.group("restore") else None
+    startup = init if init is not None else restore
 
     return {
         "duration_ms": duration,
@@ -106,8 +128,9 @@ def parse_report(log_text: str) -> dict:
         "memory_mb": memory,
         "max_memory_mb": max_memory,
         "init_ms": init,
-        "cold_total_ms": (duration + init) if init is not None else None,
-        "is_cold": init is not None,
+        "restore_ms": restore,
+        "cold_total_ms": (duration + startup) if startup is not None else None,
+        "is_cold": startup is not None,
     }
 
 def append_row(output: Path, row: dict) -> None:
@@ -121,6 +144,7 @@ def append_row(output: Path, row: dict) -> None:
         "run_number",
         "is_cold",
         "init_ms",
+        "restore_ms",
         "duration_ms",
         "cold_total_ms",
         "billed_ms",
@@ -144,6 +168,9 @@ def main() -> int:
     ap.add_argument("--warm", type=int, default=30)
     ap.add_argument("--output", type=Path, default=Path("results/raw.csv"))
     ap.add_argument("--cold-retries", type=int, default=3)
+    ap.add_argument("--snapstart", action="store_true",
+                    help="publish one version, then fire --cold concurrent invokes "
+                         "(each lands on a new environment = SnapStart restore)")
     args = ap.parse_args()
 
     if not args.payload.exists():
@@ -154,6 +181,30 @@ def main() -> int:
     print(f"[+] Cold:     {args.cold}")
     print(f"[+] Warm:     {args.warm}")
     print()
+
+    qualifier = None
+    if args.snapstart:
+        from concurrent.futures import ThreadPoolExecutor
+        qualifier = publish_version(args.function_name)
+        print(f"[+] Published version {qualifier}; burst of {args.cold}")
+        with ThreadPoolExecutor(max_workers=args.cold) as pool:
+            results = list(pool.map(
+                lambda _: invoke(args.function_name, args.payload, qualifier),
+                range(args.cold)))
+        n = 0
+        for response, client_ms, logs in results:
+            report = parse_report(logs)
+            if not report["is_cold"]:
+                continue
+            n += 1
+            append_row(args.output, {
+                "timestamp": int(time.time()), "label": args.label,
+                "function_name": args.function_name, "run_type": "cold",
+                "run_number": n, **report, "client_ms": round(client_ms, 3),
+                "response_status_code": response.get("statusCode", ""),
+            })
+        print(f"[+] SnapStart cold samples: {n}/{args.cold}")
+        args.cold = 0
 
     for i in range(1, args.cold + 1):
         accepted = False
@@ -189,10 +240,10 @@ def main() -> int:
             raise RuntimeError(f"Could not obtain a cold sample for run {i}")
 
     # One warm-up invoke after the last config refresh, then measured warm samples.
-    invoke(args.function_name, args.payload)
+    invoke(args.function_name, args.payload, qualifier)
 
     for i in range(1, args.warm + 1):
-        response, client_ms, logs = invoke(args.function_name, args.payload)
+        response, client_ms, logs = invoke(args.function_name, args.payload, qualifier)
         report = parse_report(logs)
         append_row(args.output, {
             "timestamp": int(time.time()),
