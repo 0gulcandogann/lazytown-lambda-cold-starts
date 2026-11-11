@@ -1,0 +1,7 @@
+# T2 — PYTHONPROFILEIMPORTTIME=1 inside Lambda (lazytown-v3-eager-importtime, python3.14, arm64, 512 MB, .pyc precompiled)
+# One cold start, from CloudWatch Logs. Init Duration P50 for this variant: ~716 ms.
+modules imported: 624
+pandas (cumulative, incl. numpy): 634 ms
+  self time by package: pandas 370 ms, numpy 194 ms, dateutil 12 ms
+  slowest single module: numpy._core._multiarray_umath 69 ms (C extension load)
+everything else at top level (logging, json, awslambdaric, site...): ~50 ms

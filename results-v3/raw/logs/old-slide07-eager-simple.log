@@ -1,0 +1,97 @@
+[+] Function: lazytown-slide07-eager
+[+] Label:    old-slide07-eager-simple
+[+] Cold:     30
+[+] Warm:     30
+
+[cold 01/30] refresh (attempt 1)
+  init=1816.04 ms duration=1.83 ms cold_total=1817.87 ms
+[cold 02/30] refresh (attempt 1)
+  init=1837.17 ms duration=1.98 ms cold_total=1839.15 ms
+[cold 03/30] refresh (attempt 1)
+  init=1421.08 ms duration=1.54 ms cold_total=1422.62 ms
+[cold 04/30] refresh (attempt 1)
+  init=1803.36 ms duration=1.95 ms cold_total=1805.31 ms
+[cold 05/30] refresh (attempt 1)
+  init=1804.71 ms duration=3.12 ms cold_total=1807.83 ms
+[cold 06/30] refresh (attempt 1)
+  init=1237.13 ms duration=1.26 ms cold_total=1238.39 ms
+[cold 07/30] refresh (attempt 1)
+  init=1819.33 ms duration=1.90 ms cold_total=1821.23 ms
+[cold 08/30] refresh (attempt 1)
+  init=1415.46 ms duration=1.91 ms cold_total=1417.37 ms
+[cold 09/30] refresh (attempt 1)
+  init=1793.91 ms duration=1.86 ms cold_total=1795.77 ms
+[cold 10/30] refresh (attempt 1)
+  init=1791.60 ms duration=2.10 ms cold_total=1793.70 ms
+[cold 11/30] refresh (attempt 1)
+  init=1801.57 ms duration=1.89 ms cold_total=1803.46 ms
+[cold 12/30] refresh (attempt 1)
+  init=1725.39 ms duration=1.73 ms cold_total=1727.12 ms
+[cold 13/30] refresh (attempt 1)
+  init=1729.45 ms duration=1.81 ms cold_total=1731.26 ms
+[cold 14/30] refresh (attempt 1)
+  init=1799.21 ms duration=1.83 ms cold_total=1801.04 ms
+[cold 15/30] refresh (attempt 1)
+  init=1787.91 ms duration=1.66 ms cold_total=1789.57 ms
+[cold 16/30] refresh (attempt 1)
+  init=1769.38 ms duration=1.90 ms cold_total=1771.28 ms
+[cold 17/30] refresh (attempt 1)
+  init=1804.69 ms duration=1.88 ms cold_total=1806.57 ms
+[cold 18/30] refresh (attempt 1)
+  init=1875.99 ms duration=1.84 ms cold_total=1877.83 ms
+[cold 19/30] refresh (attempt 1)
+  init=1849.55 ms duration=2.05 ms cold_total=1851.60 ms
+[cold 20/30] refresh (attempt 1)
+  init=1435.93 ms duration=2.37 ms cold_total=1438.30 ms
+[cold 21/30] refresh (attempt 1)
+  init=1395.92 ms duration=1.54 ms cold_total=1397.46 ms
+[cold 22/30] refresh (attempt 1)
+  init=1909.64 ms duration=2.03 ms cold_total=1911.67 ms
+[cold 23/30] refresh (attempt 1)
+  init=1781.90 ms duration=1.67 ms cold_total=1783.57 ms
+[cold 24/30] refresh (attempt 1)
+  init=1801.31 ms duration=1.92 ms cold_total=1803.23 ms
+[cold 25/30] refresh (attempt 1)
+  init=1850.08 ms duration=2.05 ms cold_total=1852.13 ms
+[cold 26/30] refresh (attempt 1)
+  init=1389.15 ms duration=1.70 ms cold_total=1390.85 ms
+[cold 27/30] refresh (attempt 1)
+  init=1750.56 ms duration=1.87 ms cold_total=1752.43 ms
+[cold 28/30] refresh (attempt 1)
+  init=1389.95 ms duration=1.38 ms cold_total=1391.33 ms
+[cold 29/30] refresh (attempt 1)
+  init=1866.09 ms duration=1.95 ms cold_total=1868.04 ms
+[cold 30/30] refresh (attempt 1)
+  init=1771.77 ms duration=1.78 ms cold_total=1773.55 ms
+[warm 01/30] duration=1.64 ms client=574.77 ms
+[warm 02/30] duration=1.38 ms client=580.31 ms
+[warm 03/30] duration=1.43 ms client=606.78 ms
+[warm 04/30] duration=1.41 ms client=567.52 ms
+[warm 05/30] duration=1.46 ms client=542.92 ms
+[warm 06/30] duration=1.51 ms client=542.88 ms
+[warm 07/30] duration=1.42 ms client=569.04 ms
+[warm 08/30] duration=1.44 ms client=562.04 ms
+[warm 09/30] duration=1.64 ms client=576.81 ms
+[warm 10/30] duration=1.68 ms client=568.18 ms
+[warm 11/30] duration=1.45 ms client=576.24 ms
+[warm 12/30] duration=1.48 ms client=595.22 ms
+[warm 13/30] duration=1.43 ms client=594.48 ms
+[warm 14/30] duration=1.38 ms client=587.34 ms
+[warm 15/30] duration=1.53 ms client=574.89 ms
+[warm 16/30] duration=1.44 ms client=601.73 ms
+[warm 17/30] duration=1.43 ms client=600.28 ms
+[warm 18/30] duration=1.43 ms client=556.92 ms
+[warm 19/30] duration=1.40 ms client=556.07 ms
+[warm 20/30] duration=1.60 ms client=571.60 ms
+[warm 21/30] duration=1.63 ms client=592.22 ms
+[warm 22/30] duration=1.60 ms client=627.38 ms
+[warm 23/30] duration=1.49 ms client=585.75 ms
+[warm 24/30] duration=1.43 ms client=546.83 ms
+[warm 25/30] duration=1.50 ms client=568.27 ms
+[warm 26/30] duration=1.45 ms client=599.92 ms
+[warm 27/30] duration=1.43 ms client=605.17 ms
+[warm 28/30] duration=1.40 ms client=604.80 ms
+[warm 29/30] duration=1.59 ms client=977.00 ms
+[warm 30/30] duration=1.37 ms client=579.04 ms
+
+[+] Results appended to /home/happyorsadd/Work/lazy_town/lazytown-lambda-cold-starts/results-v3/raw/old-slide07-eager-simple.partial

@@ -1,0 +1,97 @@
+[+] Function: lazytown-slide08-mem-128
+[+] Label:    old-slide08-128mb
+[+] Cold:     30
+[+] Warm:     30
+
+[cold 01/30] refresh (attempt 1)
+  init=72.99 ms duration=2018.61 ms cold_total=2091.60 ms
+[cold 02/30] refresh (attempt 1)
+  init=63.67 ms duration=1445.07 ms cold_total=1508.74 ms
+[cold 03/30] refresh (attempt 1)
+  init=73.11 ms duration=2069.85 ms cold_total=2142.96 ms
+[cold 04/30] refresh (attempt 1)
+  init=51.09 ms duration=1458.49 ms cold_total=1509.58 ms
+[cold 05/30] refresh (attempt 1)
+  init=70.70 ms duration=2024.70 ms cold_total=2095.40 ms
+[cold 06/30] refresh (attempt 1)
+  init=69.99 ms duration=2014.84 ms cold_total=2084.83 ms
+[cold 07/30] refresh (attempt 1)
+  init=50.79 ms duration=1479.96 ms cold_total=1530.75 ms
+[cold 08/30] refresh (attempt 1)
+  init=71.70 ms duration=1472.92 ms cold_total=1544.62 ms
+[cold 09/30] refresh (attempt 1)
+  init=68.21 ms duration=2018.77 ms cold_total=2086.98 ms
+[cold 10/30] refresh (attempt 1)
+  init=51.16 ms duration=1442.98 ms cold_total=1494.14 ms
+[cold 11/30] refresh (attempt 1)
+  init=71.04 ms duration=2019.43 ms cold_total=2090.47 ms
+[cold 12/30] refresh (attempt 1)
+  init=72.75 ms duration=1987.58 ms cold_total=2060.33 ms
+[cold 13/30] refresh (attempt 1)
+  init=71.29 ms duration=2093.13 ms cold_total=2164.42 ms
+[cold 14/30] refresh (attempt 1)
+  init=72.42 ms duration=2037.44 ms cold_total=2109.86 ms
+[cold 15/30] refresh (attempt 1)
+  init=72.90 ms duration=2030.34 ms cold_total=2103.24 ms
+[cold 16/30] refresh (attempt 1)
+  init=70.71 ms duration=2018.44 ms cold_total=2089.15 ms
+[cold 17/30] refresh (attempt 1)
+  init=69.06 ms duration=2076.22 ms cold_total=2145.28 ms
+[cold 18/30] refresh (attempt 1)
+  init=70.41 ms duration=2017.04 ms cold_total=2087.45 ms
+[cold 19/30] refresh (attempt 1)
+  init=72.24 ms duration=2013.03 ms cold_total=2085.27 ms
+[cold 20/30] refresh (attempt 1)
+  init=66.15 ms duration=2098.35 ms cold_total=2164.50 ms
+[cold 21/30] refresh (attempt 1)
+  init=68.76 ms duration=2015.16 ms cold_total=2083.92 ms
+[cold 22/30] refresh (attempt 1)
+  init=50.15 ms duration=1462.98 ms cold_total=1513.13 ms
+[cold 23/30] refresh (attempt 1)
+  init=55.29 ms duration=1458.07 ms cold_total=1513.36 ms
+[cold 24/30] refresh (attempt 1)
+  init=51.16 ms duration=1449.52 ms cold_total=1500.68 ms
+[cold 25/30] refresh (attempt 1)
+  init=69.82 ms duration=2011.54 ms cold_total=2081.36 ms
+[cold 26/30] refresh (attempt 1)
+  init=69.82 ms duration=1992.81 ms cold_total=2062.63 ms
+[cold 27/30] refresh (attempt 1)
+  init=52.98 ms duration=1451.15 ms cold_total=1504.13 ms
+[cold 28/30] refresh (attempt 1)
+  init=71.21 ms duration=2015.35 ms cold_total=2086.56 ms
+[cold 29/30] refresh (attempt 1)
+  init=66.86 ms duration=2054.31 ms cold_total=2121.17 ms
+[cold 30/30] refresh (attempt 1)
+  init=66.58 ms duration=1982.48 ms cold_total=2049.06 ms
+[warm 01/30] duration=1994.24 ms client=2564.51 ms
+[warm 02/30] duration=2035.53 ms client=2582.00 ms
+[warm 03/30] duration=2024.78 ms client=2599.89 ms
+[warm 04/30] duration=2010.86 ms client=2584.75 ms
+[warm 05/30] duration=2021.13 ms client=2641.58 ms
+[warm 06/30] duration=2015.58 ms client=2581.97 ms
+[warm 07/30] duration=2021.82 ms client=2601.73 ms
+[warm 08/30] duration=2013.68 ms client=2580.97 ms
+[warm 09/30] duration=2017.25 ms client=2562.81 ms
+[warm 10/30] duration=2004.36 ms client=2537.16 ms
+[warm 11/30] duration=2009.34 ms client=2627.01 ms
+[warm 12/30] duration=2010.46 ms client=2765.80 ms
+[warm 13/30] duration=2019.87 ms client=2680.08 ms
+[warm 14/30] duration=2020.19 ms client=2600.15 ms
+[warm 15/30] duration=2017.04 ms client=2842.73 ms
+[warm 16/30] duration=2044.60 ms client=2665.12 ms
+[warm 17/30] duration=2018.63 ms client=2549.82 ms
+[warm 18/30] duration=2011.93 ms client=2573.34 ms
+[warm 19/30] duration=2007.43 ms client=2823.18 ms
+[warm 20/30] duration=2015.97 ms client=2606.84 ms
+[warm 21/30] duration=1997.03 ms client=2593.26 ms
+[warm 22/30] duration=2056.69 ms client=2664.53 ms
+[warm 23/30] duration=2003.86 ms client=2560.76 ms
+[warm 24/30] duration=2010.40 ms client=2586.53 ms
+[warm 25/30] duration=2027.07 ms client=2592.92 ms
+[warm 26/30] duration=2016.71 ms client=2542.97 ms
+[warm 27/30] duration=2016.20 ms client=2607.14 ms
+[warm 28/30] duration=2023.78 ms client=2610.09 ms
+[warm 29/30] duration=2003.06 ms client=2591.63 ms
+[warm 30/30] duration=2006.63 ms client=2772.55 ms
+
+[+] Results appended to /home/happyorsadd/Work/lazy_town/lazytown-lambda-cold-starts/results-v3/raw/old-slide08-128mb.partial

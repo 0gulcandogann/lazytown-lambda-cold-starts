@@ -17,6 +17,23 @@
   ]
  },
  {
+  "name": "tiny-py313",
+  "app": "tiny",
+  "runtime": "python3.13",
+  "arch": "arm64",
+  "memory": 512,
+  "deps": false,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "tiny"
+  ],
+  "test_ids": [
+   "T1"
+  ]
+ },
+ {
   "name": "tiny-go",
   "app": "go",
   "runtime": "provided.al2023",

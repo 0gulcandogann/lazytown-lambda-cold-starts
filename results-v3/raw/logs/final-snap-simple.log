@@ -1,0 +1,39 @@
+[+] Function: lazytown-v3-final-snap
+[+] Label:    final-snap-simple
+[+] Cold:     30
+[+] Warm:     30
+
+[+] Published version 1; burst of 30
+[+] SnapStart cold samples: 3/30
+[warm 01/30] duration=1.50 ms client=546.71 ms
+[warm 02/30] duration=3.63 ms client=535.35 ms
+[warm 03/30] duration=4.25 ms client=584.29 ms
+[warm 04/30] duration=1.64 ms client=595.94 ms
+[warm 05/30] duration=1.48 ms client=631.62 ms
+[warm 06/30] duration=1.58 ms client=613.11 ms
+[warm 07/30] duration=3.44 ms client=555.28 ms
+[warm 08/30] duration=1.86 ms client=538.27 ms
+[warm 09/30] duration=3.83 ms client=548.53 ms
+[warm 10/30] duration=1.51 ms client=558.05 ms
+[warm 11/30] duration=1.70 ms client=581.23 ms
+[warm 12/30] duration=1.60 ms client=635.82 ms
+[warm 13/30] duration=1.53 ms client=633.21 ms
+[warm 14/30] duration=1.45 ms client=626.01 ms
+[warm 15/30] duration=1.57 ms client=614.54 ms
+[warm 16/30] duration=1.53 ms client=575.26 ms
+[warm 17/30] duration=1.52 ms client=644.57 ms
+[warm 18/30] duration=1.45 ms client=593.95 ms
+[warm 19/30] duration=1.41 ms client=608.27 ms
+[warm 20/30] duration=1.73 ms client=645.27 ms
+[warm 21/30] duration=1.44 ms client=653.08 ms
+[warm 22/30] duration=1.63 ms client=690.47 ms
+[warm 23/30] duration=1.64 ms client=643.19 ms
+[warm 24/30] duration=1.74 ms client=597.08 ms
+[warm 25/30] duration=1.66 ms client=559.00 ms
+[warm 26/30] duration=1.70 ms client=566.09 ms
+[warm 27/30] duration=1.46 ms client=581.39 ms
+[warm 28/30] duration=1.68 ms client=574.59 ms
+[warm 29/30] duration=1.47 ms client=624.12 ms
+[warm 30/30] duration=1.69 ms client=599.56 ms
+
+[+] Results appended to /home/happyorsadd/Work/lazy_town/lazytown-lambda-cold-starts/results-v3/raw/final-snap-simple.partial
