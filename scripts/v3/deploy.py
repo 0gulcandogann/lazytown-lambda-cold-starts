@@ -67,12 +67,31 @@ def ensure_role() -> str:
                 "--output", "text").stdout.strip()
 
 
+def bucket_name(account: str) -> str:
+    return f"lazytown-v3-artifacts-{account}"
+
+
+def ensure_bucket() -> str:
+    account = _aws("sts", "get-caller-identity", "--query", "Account", "--output", "text").stdout.strip()
+    name = bucket_name(account)
+    if _aws("s3api", "head-bucket", "--bucket", name, check=False).returncode != 0:
+        region = _aws("configure", "get", "region").stdout.strip()
+        _aws("s3api", "create-bucket", "--bucket", name,
+             "--create-bucket-configuration", f"LocationConstraint={region}")
+    return name
+
+
 def deploy(variant: dict, zip_path: Path, role_arn: str, bucket: str | None = None) -> str:
     name = function_name(variant)
     size = zip_path.stat().st_size
-    if size > DIRECT_LIMIT:
-        _aws("s3", "cp", str(zip_path), f"s3://{bucket}/{zip_path.name}")
+    try:
+        if size > DIRECT_LIMIT:
+            _aws("s3", "cp", str(zip_path), f"s3://{bucket or ensure_bucket()}/{zip_path.name}")
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"{name}: upload failed: {e}") from e
     _aws("lambda", "delete-function", "--function-name", name, check=False)
+    if size > DIRECT_LIMIT and bucket is None:
+        bucket = ensure_bucket()
     res = subprocess.run(create_cmd(variant, zip_path, role_arn, size, bucket), text=True, capture_output=True)
     if res.returncode != 0:
         raise RuntimeError(f"{name}: {res.stderr.strip()}")

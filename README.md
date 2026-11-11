@@ -13,7 +13,7 @@ Same app for every variant (a `simple` request and a pandas `report` request), p
 Cold Total P50                     simple       report
 Python baseline (x86, 512 MB)    2506.73 ms   2507.44 ms
 + ARM64 + 1024 MB                2033.68 ms   2038.55 ms
-+ .pyc precompiled                736.52 ms    725.17 ms   <- no-regret: both paths -71%
++ .pyc precompiled                736.52 ms    725.17 ms   <- no-regret: both paths -64% vs previous row
 + .pyc + lazy import               79.84 ms   1340.81 ms   <- simple -96.8%, report pays later
 + .pyc + SnapStart                389.80 ms    559.00 ms   <- best report path (paid feature)
 Python 3.15 `lazy import`          79.97 ms   1328.80 ms   (PEP 810, preview runtime)

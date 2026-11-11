@@ -41,3 +41,22 @@ def test_snapstart_flag():
 def test_env_vars_passed():
     cmd = create_cmd({**V, "env": {"PYTHONPROFILEIMPORTTIME": "1"}}, Path("a.zip"), ROLE, zip_bytes=1)
     assert "PYTHONPROFILEIMPORTTIME=1" in cmd[cmd.index("--environment") + 1]
+
+
+def test_deploy_wraps_aws_failures_as_runtimeerror(monkeypatch, tmp_path):
+    import subprocess
+    import pytest
+    import deploy as d
+    z = tmp_path / "big.zip"
+    z.write_bytes(b"x")
+    monkeypatch.setattr(d, "DIRECT_LIMIT", 0)
+    def boom(*a, **k):
+        raise subprocess.CalledProcessError(1, "aws s3 cp")
+    monkeypatch.setattr(d, "_aws", boom)
+    with pytest.raises(RuntimeError):
+        d.deploy(V, z, ROLE, bucket="b")
+
+
+def test_bucket_name_uses_account():
+    from deploy import bucket_name
+    assert bucket_name("123") == "lazytown-v3-artifacts-123"

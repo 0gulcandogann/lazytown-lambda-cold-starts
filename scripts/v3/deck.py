@@ -332,10 +332,10 @@ Memory: init her boyutta 80 milisaniye civarında kalıyor; az önce gördüğü
 Yani memory import'u hızlandırmaz, handler'ı hızlandırır.""",
     # 11
     """Slayt 11: The Final Race — 07:40–09:10
-Final. Bu sefer adil: hepsi aynı uygulama, aynı bağımlılıklar, hem simple hem report request. Her hücre otuz cold start.
+Final. Bu sefer adil: hepsi aynı uygulama, aynı bağımlılıklar, hem simple hem report request. Her hücre otuz cold start. İki istisnayı söyleyeyim: 3.15 satırı preview runtime'da, SnapStart'ın cold örnekleri de otuz eşzamanlı istekle toplandı, çünkü snapshot'tan restore'u başka türlü zorlayamazsınız.
 Baseline: x86, 512 megabayt, .pyc yok. Yaklaşık 2507 milisaniye.
 ARM64 ve 1024 megabayt: 2034. Bedava kazançlar ama hâlâ iki saniye.
-Üstüne .pyc: 736,52 ve 725,17. Pişmanlıksız adım, iki yolda da yüzde 71.
+Üstüne .pyc: 736,52 ve 725,17. Pişmanlıksız adım: bir önceki satıra göre iki yolda da yüzde 64.
 Üstüne lazy import: simple 79,84. Ama report 1340,81. Trade-off'u görüyorsunuz.
 Report yolu çoksa SnapStart: init'i önceden alınmış bir snapshot'tan geri yüklüyor. 389,80 ve 559. Report'ta en iyisi. Dürüst olayım, SnapStart ücretli: snapshot saklama ve her restore için ödeme var.
 Go referans olarak 49,40.

@@ -66,3 +66,14 @@ def test_every_ms_number_is_measured(deck):
             if not ok and i > 4:
                 bad.append((i, m.group(0)))
     assert bad == []
+
+
+def test_pyc_step_percent_is_not_misattributed(deck):
+    # final-free -> final-pyc is ~-64%; -71% is only vs the x86 baseline
+    n = notes(deck.slides[10])
+    assert "yüzde 71" not in n or "baseline'a göre yüzde 71" in n
+    assert "yüzde 64" in n
+
+
+def test_final_race_notes_disclose_snapstart_method(deck):
+    assert "eşzamanlı" in notes(deck.slides[10])
