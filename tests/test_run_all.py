@@ -4,7 +4,7 @@ GROUPS = build_groups()
 
 
 def test_final_race_groups_first():
-    t9 = {"final-baseline", "final-free", "final-opt", "final-snap", "final-go", "pep810-315"}
+    t9 = {"final-baseline", "final-free", "final-pyc", "final-opt", "final-snap", "final-go", "pep810-315"}
     first = {g["function"].removeprefix("lazytown-v3-") for g in GROUPS[:len(t9)]}
     assert first == t9
 

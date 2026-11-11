@@ -351,6 +351,24 @@
   ]
  },
  {
+  "name": "final-pyc",
+  "app": "eager",
+  "runtime": "python3.14",
+  "arch": "arm64",
+  "memory": 1024,
+  "deps": true,
+  "pyc": "right",
+  "snapstart": false,
+  "env": {},
+  "payloads": [
+   "simple",
+   "report"
+  ],
+  "test_ids": [
+   "T9"
+  ]
+ },
+ {
   "name": "final-opt",
   "app": "lazy_fn",
   "runtime": "python3.14",
