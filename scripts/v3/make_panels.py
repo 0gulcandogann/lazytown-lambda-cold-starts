@@ -72,6 +72,17 @@ def main() -> int:
     c = lambda label: S[label]["cold_total_p50"]
     st = lambda label: S[label]["startup_p50"]
 
+    # Slide 4 — one measured cold start summary (v3 tiny handler)
+    t = S["tiny-py-tiny"]
+    code_panel(["LAZYTOWN BENCHMARK - PYTHON 3.14",
+                "samples   30 cold / 30 warm",
+                f"INIT P50        {t['startup_p50']:.2f} ms",
+                f"COLD TOTAL P50  {t['cold_total_p50']:.2f} ms",
+                f"WARM P50        {t['warm_p50']:.2f} ms",
+                "",
+                "COLD TOTAL = Init + Duration"],
+               OUT / "s04_terminal.png", width=760, size=28)
+
     # Slide 5 — Round 1
     bar_panel("ROUND 1 — COLD TOTAL P50 (TINY HANDLER)",
               [("PYTHON 3.13", c("tiny-py313-tiny")), ("PYTHON 3.14", c("tiny-py-tiny")), ("GO", c("tiny-go-tiny"))],
@@ -89,6 +100,14 @@ def main() -> int:
                title="$ PYTHONPROFILEIMPORTTIME=1   (CloudWatch, one cold start)")
 
     # Slide 7 — lazy
+    code_panel(["import json", "",
+                "def lambda_handler(event, context):",
+                "    if event[\"type\"] == \"simple\":",
+                "        return {\"ok\": True}",
+                "",
+                "    import pandas as pd   # moved",
+                "    df = pd.DataFrame(...)"],
+               OUT / "s07_code.png", highlight={6}, width=820, size=26, title="app.py — lazy")
     table_panel("SIMPLE REQUEST", ["Variant", "Init P50", "Cold Total P50"],
                 [["Eager", f"{st('eager-512-simple'):.2f} ms", f"{c('eager-512-simple'):.2f} ms"],
                  ["Lazy", f"{st('lazyfn-512-simple'):.2f} ms", f"{c('lazyfn-512-simple'):.2f} ms"]],
@@ -97,8 +116,9 @@ def main() -> int:
     bar_panel("TRAINING #1 — REPORT, COLD TOTAL P50",
               [("EAGER REPORT", c("eager-512-report")), ("LAZY REPORT", c("lazyfn-512-report"))],
               [f"SAME LAZY IMPORT @1769 MB: {c('lazyfn-1769-report'):.2f} ms",
-               "INIT CPU IS BOOSTED. HANDLER CPU ISN'T."],
-              OUT / "s07_report.png", colors=[CYAN, GOLD], footer_colors=[ORANGE, GREEN])
+               "OBSERVED: INIT CPU BOOSTED, HANDLER NOT."],
+              OUT / "s07_report.png", colors=[CYAN, GOLD], footer_colors=[ORANGE, GREEN],
+              font_scale=1.45)
 
     # Slide 8 — .pyc
     bar_panel("TRAINING #2 — COLD TOTAL P50 (pandas, 512 MB)",

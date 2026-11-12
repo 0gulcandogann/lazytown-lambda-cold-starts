@@ -155,8 +155,18 @@ def build_deck(out: Path = DST) -> Path:
     c = lambda label: S[label]["cold_total_p50"]
     prs = Presentation(str(SRC))
     v2 = list(prs.slides)  # v2[0] is slide 1
-    s5, s6, s7, s8, s9, s10, s12 = v2[4], v2[5], v2[6], v2[7], v2[8], v2[9], v2[11]
+    s4, s5, s6, s7, s8, s9, s10, s12 = v2[3], v2[4], v2[5], v2[6], v2[7], v2[8], v2[9], v2[11]
     s_pep = clone_slide(prs, s5)
+
+    # --- 4: anatomy — v3 numbers, and say that YOUR imports run in INIT ---
+    replace_picture(s4, 107, PANELS / "s04_terminal.png", width_pt=228, left_pt=564, top_pt=115)
+    remove_shape(s4, 108)  # v2 raw log line (cut off, old numbers)
+    remove_shape(s4, 110)  # "No active environment yet." strip
+    cap4 = copy.deepcopy(shape(s4, 106)._element)
+    s4.shapes._spTree.append(cap4)
+    c4 = s4.shapes[-1]
+    c4.left, c4.top, c4.width = Pt(62), Pt(306), Pt(470)
+    set_lines(c4, ["INIT also runs YOUR imports", "+ top-level code"], size=11)
 
     # --- 5: Round 1 ---
     replace_picture(s5, 117, PANELS / "s05_round1.png", top_pt=150)
@@ -177,8 +187,14 @@ def build_deck(out: Path = DST) -> Path:
 
     # --- 7: lazy ---
     set_lines(shape(s7, 138), ["TRAINING #1: BE LAZY ON PURPOSE"])
+    for sid in (140, 151, 152):  # old two-screenshot code view + its highlight boxes
+        remove_shape(s7, sid)
+    replace_picture(s7, 141, PANELS / "s07_code.png", top_pt=114, width_pt=244, left_pt=59)
     replace_picture(s7, 146, PANELS / "s07_simple.png")
-    replace_picture(s7, 145, PANELS / "s07_report.png")
+    replace_picture(s7, 145, PANELS / "s07_report.png", top_pt=150, width_pt=225, left_pt=644)
+    t149 = shape(s7, 149)
+    t149.top, t149.height = Pt(254), Pt(70)
+    set_lines(t149, ["Be lazy when you", "can AVOID the work.", "Not when you only", "postpone it."], size=10)
     ratio = c("lazyfn-512-report") / c("eager-512-report")
     set_lines(shape(s7, 150), [f"{ratio:.1f}x SLOWER"])
 
@@ -208,10 +224,10 @@ def build_deck(out: Path = DST) -> Path:
     set_lines(shape(s8, 159), ["No Python change needed."])
     replace_picture(s8, 160, PANELS / "s10_memory.png")
     set_lines(shape(s8, 161), ["ARM64"])
-    replace_picture(s8, 163, PANELS / "s10_arm.png", top_pt=95, width_pt=250, left_pt=615)
+    replace_picture(s8, 163, PANELS / "s10_arm.png", top_pt=92, width_pt=215, left_pt=632)
     set_lines(shape(s8, 162), ["AND INIT?"])
-    set_lines(shape(s8, 164), ["Init stays ~80 ms at", "every size. Memory", "speeds the handler,",
-                               "not the imports."])
+    set_lines(shape(s8, 164), ["Init: same at every", "size. Memory speeds", "the handler, not",
+                               "init-time imports."], size=10)
     remove_shape(s8, 165)  # the memory panel's footer already carries this line
 
     # --- 11 (v2 #10): final race ---
@@ -236,12 +252,11 @@ def build_deck(out: Path = DST) -> Path:
 def _final_table(gf, S) -> None:
     c = lambda label: S[label]["cold_total_p50"]
     rows = [
-        ("Python baseline (x86, 512)", "final-baseline"),
+        ("Baseline (x86, 512, no .pyc)", "final-baseline"),
         ("+ ARM64 + 1024 MB", "final-free"),
         ("+ .pyc", "final-pyc"),
-        ("+ .pyc + lazy", "final-opt"),
+        ("+ .pyc + lazy import", "final-opt"),
         ("+ .pyc + SnapStart", "final-snap"),
-        ("3.15 lazy import", "pep810-315"),
         ("Go (reference)", "final-go"),
     ]
     tbl = gf.table._tbl
@@ -290,18 +305,20 @@ Bugün derdimiz Sportacus'le değil, Robbie'yle.""",
     # 4
     """Slayt 4: Wake Up, Robbie! — 01:10–02:00
 Hazır bir execution environment yoksa Lambda sıfırdan kurar: runtime başlar, modülünüz import edilir, init kodu çalışır. Ancak ondan sonra handler request'i görür. Buna cold start diyoruz: idle'dan sonra, deploy'dan sonra ve scale ederken.
+Dikkat edin: diyagramda INIT kutusu sadece "runtime" gibi görünüyor ama sizin import'larınız ve modül seviyesindeki bütün kod da orada çalışıyor. Bugünkü hikâyenin tamamı bu cümle.
 Environment hazırsa warm invocation: request doğrudan handler'a gider.
-Benim takip ettiğim sayı Cold Total P50: Init Duration artı handler Duration, cold invocation'lar içinde median. Bu AWS'in verdiği bir metric değil, benim hesapladığım bir toplam. Her ölçüm otuz cold, otuz warm.""",
+Benim takip ettiğim sayı Cold Total P50: Init Duration artı handler Duration, cold invocation'lar içinde median. Bu AWS'in verdiği bir metric değil, benim hesapladığım bir toplam. Her ölçüm otuz cold, otuz warm. Sağdaki örnek minik handler: Cold Total P50 79,59 milisaniye.""",
     # 5
     """Slayt 5: Round 1 — 02:00–02:40
 İlk tur: minik bir handler. ARM64, 512 MB, aynı payload. Küçük JSON girer, küçük JSON çıkar.
 Go 50,89 milisaniye. Python 3.14 79,59. Fark 29 milisaniye. Bu kadar mı? Evet. Bu kadar küçük bir işte sayıyı dil değil, Lambda'nın kendi init'i belirliyor.
-Python'cılar için küçük bir not: aynı kod Python 3.13 runtime'ında 63,83. Yani 3.14'e geçmek bu testte cold start'a 16 milisaniye ekledi. Yükseltme bedava değil; ölçün.
+Python'cılar için küçük bir not: aynı kod Python 3.13 runtime'ında 63,83. Yani 3.14'e geçmek bu testte cold start'a 16 milisaniye ekledi. Bu tek bir minik handler'da ölçüldü, genel kural değil. Mesaj şu: yükseltmeyi de ölçün.
 Ama gerçek bir Python uygulaması boş gelmez. Yanında import'larla gelir. Asıl yarış orada başlıyor.""",
     # 6
     """Slayt 6: Robbie's Morning — 02:40–03:30
 Pandas kullanan bir Lambda aldım ve Python'ın kendisine sordum: PYTHONPROFILEIMPORTTIME=1. Bu, python -X importtime'ın environment variable hali; çıktısı direkt CloudWatch'a düşüyor.
-Init P50 716,31 milisaniye. Bunun 634 milisaniyesi tek satır: import pandas. Arkasından 624 modül geliyor. Init'in yüzde 89'u.
+Init P50 716,31 milisaniye. Bunun 634 milisaniyesi tek satır: import pandas. Toplamda 624 modül yükleniyor. Init'in yüzde 89'u.
+Küçük bir dürüstlük notu: 634 ve diğer import'lar için 59,93, profiler açık tek bir cold start'tan geliyor; profiler biraz ek yük de getiriyor. 716 ise otuz cold start'ın median'ı. O yüzden parçalar toplamla birebir tutmuyor, oran tutuyor.
 Sağ altta bir not daha: eski deneyde 125 megabaytlık kullanılmayan paketi taşıdım ama import etmedim. Fark yok, bugün tekrar ölçtüm, yine yok. Taşımak bedava; import etmek değil.
 Yani Robbie'nin sabahı bavulu toplarken değil, kahvaltıda gidiyor.""",
     # 7
@@ -309,7 +326,8 @@ Yani Robbie'nin sabahı bavulu toplarken değil, kahvaltıda gidiyor.""",
 İlk antrenman: bilerek tembel olmak.
 Fonksiyon iki tür request alıyor: simple ve pandas'lı report. Import'u report'un code path'ine taşıyorum. Simple request 719,49'dan 82,46 milisaniyeye iniyor. Yüzde 89.
 Ama report request: eager 739,08, lazy 2689,39. Üç buçuk kat yavaş. Aynı import, aynı iş. Neden?
-Geçen sefer burada 'bilmiyorum' diyordum. Bu sefer ölçtüm. Eager sürümün init'i 128 megabaytta 716,61, 1769'da 712,48 milisaniye. Memory init'i hiç değiştirmiyor. Çünkü Lambda init sırasında burst CPU veriyor. Handler'da ise CPU memory'yle orantılı; 512 megabayt kabaca üçte bir vCPU. Import'u handler'a taşıyınca aynı iş kısık CPU'da çalışıyor. Aynı lazy sürüm 1769 megabaytta 792,49'a iniyor.
+Geçen sefer burada 'bilmiyorum' diyordum. Bu sefer ölçtüm. Eager sürümün init'i 128 megabaytta 716,61, 1769'da 712,48 milisaniye. Memory init'i hiç değiştirmiyor. Lambda init sırasında memory'den bağımsız, daha fazla CPU veriyor gibi görünüyor. Bunu AWS belgelemiyor; bu bizim gözlemimiz. Handler'da ise CPU memory'yle orantılı; 512 megabayt kabaca üçte bir vCPU. Import'u handler'a taşıyınca aynı iş kısık CPU'da çalışıyor. Aynı lazy sürüm 1769 megabaytta 792,49'a iniyor.
+Bir uyarı: Ağustos 2025'ten beri on-demand ZIP fonksiyonlarda INIT süresi de faturalanıyor. İşi init'e koymak daha hızlı, ama bedava değil.
 Aklınızda tek cümle kalacaksa: işi ortadan mı kaldırdın, yoksa sadece erteledin mi?""",
     # 8
     """Slayt 8: Training #2: Pre-compile — 04:50–06:00
@@ -323,24 +341,25 @@ Ve bu bir trade-off değil: hem simple hem report hızlanıyor.""",
     """Slayt 9: Training #3: lazy import — 06:00–06:50
 Python 3.15 ile gelen PEP 810: lazy import. Import'u fonksiyonun içine taşımak zorunda değilsiniz. Dosyanın başına lazy import pandas as pd yazıyorsunuz; isim hemen bağlanıyor, modül ilk kullanıldığı anda yükleniyor.
 Lambda'da Python 3.15 şu an public preview. Yine de ölçtüm, 1024 megabayt: simple request eager 753,34, lazy 79,97. Report: eager 747,79, lazy 1328,80.
-Fonksiyon içi import'la aynı trade-off; bedel yine erteleniyor. Ama kod okunur kalıyor, linter'lar ve tip kontrolü mutlu.""",
+Fonksiyon içi import'la aynı trade-off; bedel yine erteleniyor. Ama import'lar dosyanın başında, okunur kalıyor.
+İki uyarı: linter ve tip kontrolü araçlarının bu yeni sözdizimine desteği henüz taze. Ve 3.15 Lambda'da hâlâ preview; production için değil, yarın için.""",
     # 10
-    """Slayt 10: Training #4: Free Wins — 06:50–07:40
-Python koduna dokunmadan alınan iki kazanç.
-ARM64: aynı pandas uygulaması x86'da 948,03, ARM64'te 719,49. Yüzde 24, template'te tek satır. Bağımlılıklarınızın ARM64 wheel'i var mı, önce ona bakın.
-Memory: init her boyutta 80 milisaniye civarında kalıyor; az önce gördüğümüz burst CPU. Ama CPU yoğun bir handler'da 128 megabaytta 2196,22, 1769'da 225,15. Warm'da 17 kat hızlı ve GB-milisaniye olarak yüzde 19 daha ucuz, çünkü süre memory'den daha hızlı düşüyor.
-Yani memory import'u hızlandırmaz, handler'ı hızlandırır.""",
+    """Slayt 10: Training #4: Free Wins — 06:50–07:30
+Python koduna dokunmadan iki kazanç, kısaca.
+ARM64: aynı pandas uygulaması x86'da 948,03, ARM64'te 719,49. Yüzde 24, template'te tek satır. Önce bağımlılıklarınızın ARM64 wheel'i var mı, ona bakın.
+Memory: CPU yoğun bir handler 128 megabaytta 2196, 1769'da 225 milisaniye. Warm'da 17 kat hızlı ve yüzde 19 daha ucuz.
+Init'teki import'ları ise memory değiştirmiyor; slayt 7'de gördük.""",
     # 11
-    """Slayt 11: The Final Race — 07:40–09:10
-Final. Bu sefer adil: hepsi aynı uygulama, aynı bağımlılıklar, hem simple hem report request. Her hücre otuz cold start. İki istisnayı söyleyeyim: 3.15 satırı preview runtime'da, SnapStart'ın cold örnekleri de otuz eşzamanlı istekle toplandı, çünkü snapshot'tan restore'u başka türlü zorlayamazsınız.
-Baseline: x86, 512 megabayt, .pyc yok. Yaklaşık 2507 milisaniye.
-ARM64 ve 1024 megabayt: 2034. Bedava kazançlar ama hâlâ iki saniye.
-Üstüne .pyc: 736,52 ve 725,17. Pişmanlıksız adım: bir önceki satıra göre iki yolda da yüzde 64.
-Üstüne lazy import: simple 79,84. Ama report 1340,81. Trade-off'u görüyorsunuz.
-Report yolu çoksa SnapStart: init'i önceden alınmış bir snapshot'tan geri yüklüyor. 389,80 ve 559. Report'ta en iyisi. Dürüst olayım, SnapStart ücretli: snapshot saklama ve her restore için ödeme var.
-Go referans olarak 49,40.
-Peki kim kazandı? Go hâlâ önde, onu inkâr etmeyeceğim. Ama Robbie simple request'te 2,5 saniyeden 80 milisaniyeye geldi: yüzde 96,81. Dili değiştirmedik; Python'ın nasıl uyandığını değiştirdik.
-Bu rakamlar bu workload, bu region ve bu runtime için. Bir de: eski sunumdaki 19 testi bugün tekrar çalıştırdım, hepsi yüzde 5 içinde aynı çıktı.""",
+    """Slayt 11: The Final Race — 07:30–09:10
+Final. Bu sefer adil: aynı uygulama, aynı bağımlılıklar, simple ve report request, her hücre otuz cold start. SnapStart'ın cold örnekleri otuz eşzamanlı istekle toplandı; snapshot restore'u başka türlü zorlayamıyorsunuz.
+Baseline: x86, 512 megabayt, .pyc yok. Uv ile paketleyip compile etmezseniz bu sizsiniz. 2,5 saniye.
+ARM64 ve 1024 megabayt: iki saniye. Hâlâ yavaş.
+Üstüne .pyc: 737 milisaniye. Pişmanlıksız adım, bir önceki satıra göre iki yolda da yüzde 64.
+Üstüne lazy import: simple 80 milisaniye. Report 1341. Trade-off. 3.15'in lazy import'u da aynı sonucu veriyor.
+Report yolu çoksa SnapStart: 559 milisaniye, report'ta en iyisi. Ama ücretli.
+Go referans: 49 milisaniye.
+Go hâlâ önde, inkâr etmeyeceğim. Ama Robbie 2,5 saniyeden 80 milisaniyeye geldi: yüzde 97. Dili değiştirmedik; Python'ın nasıl uyandığını değiştirdik.
+Eski sunumdaki 19 testi de tekrar çalıştırdım: hepsi yüzde 5 içinde aynı.""",
     # 12
     """Slayt 12: Kapanış — 09:10–10:00
 Kendi Lambda'nıza dönünce üç soru sorun.

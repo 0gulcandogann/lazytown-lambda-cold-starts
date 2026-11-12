@@ -77,3 +77,31 @@ def test_pyc_step_percent_is_not_misattributed(deck):
 
 def test_final_race_notes_disclose_snapstart_method(deck):
     assert "eşzamanlı" in notes(deck.slides[10])
+
+
+def test_slide4_puts_imports_in_init(deck):
+    t = texts(deck.slides[3])
+    assert "imports" in t and "top-level" in t
+
+
+def test_slide7_single_code_snippet(deck):
+    pics = [sh for sh in deck.slides[6].shapes if sh.shape_type == 13 and sh.left < 12700 * 320]
+    assert len(pics) == 1
+
+
+def test_slide10_memory_claim_scoped_to_init(deck):
+    t = texts(deck.slides[9])
+    assert "not the imports" not in t and "init" in t.lower()
+
+
+def test_final_table_merges_lazy_rows_and_labels_baseline(deck):
+    t = texts(deck.slides[10])
+    assert "3.15 lazy import" not in t
+    assert "no .pyc" in t
+
+
+def test_accuracy_caveats_in_notes(deck):
+    assert "gözlem" in notes(deck.slides[6])           # burst CPU is observed, not documented
+    assert "Ağustos 2025" in notes(deck.slides[6])     # INIT is billed
+    assert "tek bir cold start" in notes(deck.slides[5])
+    assert "mutlu" not in notes(deck.slides[8])
